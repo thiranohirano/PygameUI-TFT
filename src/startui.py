@@ -33,9 +33,9 @@ class StartUI(ui.Scene):
         
         x = MARGIN
         y += LABEL_H + MARGIN;
-        self.on17_button = ui.Button(ui.Rect(MARGIN, y, BUTTON_W, BUTTON_H), 'VKeyboard')
-        self.on17_button.on_clicked.connect(self.gpi_button_click)
-        self.add_child(self.on17_button)
+        self.vkeyboard_button = ui.Button(ui.Rect(MARGIN, y, BUTTON_W, BUTTON_H), 'VKeyboard')
+        self.vkeyboard_button.on_clicked.connect(self.gpi_button_click)
+        self.add_child(self.vkeyboard_button)
         
         x += BUTTON_W + MARGIN
         self.wifi_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'Wifi...')
