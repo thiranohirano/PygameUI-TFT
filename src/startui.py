@@ -38,7 +38,7 @@ class StartUI(myscene.MyScene):
         self.add_child_in_frame(self.vkeyboard_button)
         
         x += BUTTON_W + MARGIN
-        self.wifi_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'Wifi...')
+        self.wifi_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'WiFi...')
         self.wifi_button.on_clicked.connect(self.wifi_button_click)
         self.add_child_in_frame(self.wifi_button)
  

@@ -5,6 +5,7 @@ import os
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+import pygame
 import pygameui as ui
 import startui
 import pifi_pygameui
@@ -27,6 +28,7 @@ class SceneManager(object):
 
 if __name__ == '__main__':
     ui.init('pygameui ', (480, 320))
+#     pygame.mouse.set_visible(False)
     pygameuitheme.set_theme()
     sm = SceneManager()
     sm.append_scene(startui.StartUI(sm))
