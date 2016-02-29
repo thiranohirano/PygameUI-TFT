@@ -105,3 +105,16 @@ def set_theme():
                     state='normal',
                     key='border_widths',
                     value=3)
+    
+    theme.current.set(class_name='MainFrame',
+                    state='normal',
+                    key='background_color',
+                    value=black_color)
+    theme.current.set(class_name='MainFrame',
+                    state='normal',
+                    key='border_color',
+                    value=mycolors.belize_hole)
+    theme.current.set(class_name='MainFrame',
+                    state='normal',
+                    key='border_widths',
+                    value=8)

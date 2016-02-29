@@ -3,16 +3,16 @@ Created on 2016/02/29
 
 @author: hirano
 '''
-import sys
+import pygame
 import pygameui as ui
-from pygameui import *
-import VirtualKeyboardPygameUI
-import mycolors
-from pygameui.colors import black_color
-from subprocess import *
+import pygameui.window as window
+import VirtualKeyboardPygameUI as vkeyboard
+import pygameui_myscene as myscene
 import time
 import threading
 import socket
+import sys
+from subprocess import PIPE, Popen
 
 LABEL_H = 30
 BUTTON_W = 210
@@ -20,41 +20,41 @@ BUTTON_H = 60
 MARGIN = 20
 SMALL_MARGIN = 10
 
-class StartUI(ui.Scene):
+class StartUI(myscene.MyScene):
     def __init__(self, sm):
-        ui.Scene.__init__(self)
+        myscene.MyScene.__init__(self)
         self.sm = sm
-        self.mainlabel = ui.Label(ui.Rect(0, 0, window.rect.w , window.rect.h), "")
-        self.add_child(self.mainlabel)
+#         self.mainframe = pygameui_mainframe.MainFrame()
+#         self.add_child(self.mainframe)
         
         y=MARGIN
         ip_label = ui.Label(ui.Rect(MARGIN, y, window.rect.w - MARGIN * 2, LABEL_H), self.get_ip())
-        self.add_child(ip_label)
+        self.add_child_in_frame(ip_label)
         
         x = MARGIN
         y += LABEL_H + MARGIN;
         self.vkeyboard_button = ui.Button(ui.Rect(MARGIN, y, BUTTON_W, BUTTON_H), 'VKeyboard')
         self.vkeyboard_button.on_clicked.connect(self.gpi_button_click)
-        self.add_child(self.vkeyboard_button)
+        self.add_child_in_frame(self.vkeyboard_button)
         
         x += BUTTON_W + MARGIN
         self.wifi_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'Wifi...')
         self.wifi_button.on_clicked.connect(self.wifi_button_click)
-        self.add_child(self.wifi_button)
+        self.add_child_in_frame(self.wifi_button)
  
         x = MARGIN
         y += BUTTON_H + MARGIN
         self.reboot_button = ui.Button(ui.Rect(MARGIN, y, BUTTON_W, BUTTON_H), 'Reboot')
         self.reboot_button.on_clicked.connect(self.reboot_button_click)
-        self.add_child(self.reboot_button)
+        self.add_child_in_frame(self.reboot_button)
  
         x += BUTTON_W + MARGIN
         self.shutdown_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'Shutdown')
         self.shutdown_button.on_clicked.connect(self.shutdown_button_click)
-        self.add_child(self.shutdown_button)
+        self.add_child_in_frame(self.shutdown_button)
  
     def gpi_button_click(self, btn, mbtn):
-        self.vkeyboard=VirtualKeyboardPygameUI.show_vkeyboard(self.input_vkeyboard, "hoge")
+        self.vkeyboard=vkeyboard.show_vkeyboard(self.input_vkeyboard, "hoge")
             
     def wifi_button_click(self, btn, mbtn):
         self.sm.use_scene(1)
@@ -63,25 +63,24 @@ class StartUI(ui.Scene):
         print text
         
     def reboot_button_click(self, btn, mbtn):
-        label = ui.Label(ui.Rect(0,0, window.rect.w, window.rect.h), 'Rebooting...')
-        self.add_child(label)
+#         self.add_fullscreen_label('Rebooting...')
+        self.rm_allchildren_in_frame()
         threading.Timer(1, self.restart_proccess).start()
     
     def restart_proccess(self):
-        pygame.quit()
         #         self.restart()
         self.dummyrestart()
+        pygame.quit()
         sys.exit()
         
     def shutdown_button_click(self, btn, mbtn):
-        label = ui.Label(ui.Rect(0,0, window.rect.w, window.rect.h), 'Shutting Down...')
-        self.add_child(label)
+        self.add_fullscreen_label('Shutting Down...')
         threading.Timer(1, self.shutdown_proccess).start()
         
     def shutdown_proccess(self):
-        pygame.quit()
 #         self.shutdown()
         self.dummyrestart()
+        pygame.quit()
         sys.exit()
         
     # Get Your External IP Address
@@ -118,7 +117,4 @@ class StartUI(ui.Scene):
         ui.Scene.update(self, dt)
         
     def layout(self):
-        self.mainlabel.background_color = black_color
-        self.mainlabel.border_color = mycolors.belize_hole
-        self.mainlabel.border_widths = 8
         ui.Scene.layout(self)
