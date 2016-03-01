@@ -4,7 +4,7 @@ Created on 2016/02/29
 @author: hirano
 '''
 import pygame
-import pygameui as ui
+import myui as ui
 import pygameui.window as window
 import VirtualKeyboardPygameUI as vkeyboard
 import pygameui_myscene as myscene
@@ -13,6 +13,7 @@ import threading
 import socket
 import sys
 from subprocess import PIPE, Popen
+from virtualKeyboard import VirtualKeyboard
 
 LABEL_H = 30
 BUTTON_W = 210
@@ -38,7 +39,7 @@ class StartUI(myscene.MyScene):
         self.add_child_in_frame(self.vkeyboard_button)
         
         x += BUTTON_W + MARGIN
-        self.wifi_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'WiFi...')
+        self.wifi_button = ui.Button(ui.Rect(x, y, BUTTON_W, BUTTON_H), 'WiFi...')
         self.wifi_button.on_clicked.connect(self.wifi_button_click)
         self.add_child_in_frame(self.wifi_button)
  
@@ -49,12 +50,18 @@ class StartUI(myscene.MyScene):
         self.add_child_in_frame(self.reboot_button)
  
         x += BUTTON_W + MARGIN
-        self.shutdown_button = ui.Button(ui.Rect(250, y, BUTTON_W, BUTTON_H), 'Shutdown')
+        self.shutdown_button = ui.Button(ui.Rect(x, y, BUTTON_W, BUTTON_H), 'Shutdown')
         self.shutdown_button.on_clicked.connect(self.shutdown_button_click)
         self.add_child_in_frame(self.shutdown_button)
+        
+#         self.myspiner = myspiner.MySpiner(ui. Rect(100, 100, 60, 60))
+#         self.add_child_in_frame(self.myspiner)
  
     def gpi_button_click(self, btn, mbtn):
-        self.vkeyboard=vkeyboard.show_vkeyboard(self.input_vkeyboard, "hoge")
+#         self.vkeyboard=vkeyboard.show_vkeyboard(self.input_vkeyboard, "hoge")
+        vkey = VirtualKeyboard(ui.window_surface)
+        input_key = vkey.run("")
+        print input_key
             
     def wifi_button_click(self, btn, mbtn):
         self.sm.use_scene(1)
@@ -70,8 +77,7 @@ class StartUI(myscene.MyScene):
     def restart_proccess(self):
         #         self.restart()
         self.dummyrestart()
-        pygame.quit()
-        sys.exit()
+        ui.quit()
         
     def shutdown_button_click(self, btn, mbtn):
         self.add_fullscreen_label('Shutting Down...')
@@ -80,8 +86,7 @@ class StartUI(myscene.MyScene):
     def shutdown_proccess(self):
 #         self.shutdown()
         self.dummyrestart()
-        pygame.quit()
-        sys.exit()
+        ui.quit()
         
     # Get Your External IP Address
     def get_ip(self):

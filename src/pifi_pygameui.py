@@ -3,11 +3,13 @@ Created on 2016/02/26
 
 @author: hirano
 '''
-import pygameui as ui
+import myui as ui
 import pygameui.window as window
 import pygameui.theme as theme
 import VirtualKeyboardPygameUI as vkeyboard
+from virtualKeyboard import VirtualKeyboard
 import pygameui_myscene as myscene
+import pygameui_myspinner as myspinner
 import threading
 import time
 
@@ -32,10 +34,11 @@ class Pifi_pygameui(myscene.MyScene):
         self.back_button.on_clicked.connect(self.back_button_click)
         self.add_child_in_frame(self.back_button)
         
-        self.spinner = ui.SpinnerView(ui.Rect(
-            (window.rect.w - ui.SpinnerView.size) / 2,
-            (window.rect.h - ui.SpinnerView.size) / 2,
-            0, 0))
+#         self.spinner = ui.SpinnerView(ui.Rect(
+#             (window.rect.w - ui.SpinnerView.size) / 2,
+#             (window.rect.h - ui.SpinnerView.size) / 2,
+#             0, 0))
+        self.spinner = myspinner.MySpinner(ui.Rect((window.rect.w - myspinner.MySpinner.size) /2, (window.rect.h - myspinner.MySpinner.size) /2, 0, 0))
         self.add_child_in_frame(self.spinner)
         self.scroll_list = None
         
@@ -44,7 +47,10 @@ class Pifi_pygameui(myscene.MyScene):
     
     def item_selected(self, list_view, item, index):
         print str(index)
-        vkeyboard.show_vkeyboard(self.input_promptpassword)
+#         vkeyboard.show_vkeyboard(self.input_promptpassword)
+        vkey = VirtualKeyboard(ui.window_surface)
+        input_key = vkey.run("")
+        print input_key
         
     def input_promptpassword(self, vkeyboard, text):
         print text

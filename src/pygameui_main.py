@@ -6,7 +6,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import pygame
-import pygameui as ui
+import myui as ui
 import startui
 import pifi_pygameui
 import pygameuitheme

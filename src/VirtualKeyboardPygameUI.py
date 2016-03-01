@@ -1,10 +1,14 @@
-from pygameui import *
+import pygame
+import myui as ui
+import pygameui.scene as scene
+import pygameui.window as window
+import pygameui.theme as theme
 from string import maketrans
 
 Uppercase = maketrans("abcdefghijklmnopqrstuvwxyz`1234567890-=[]\;\',./",
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+{}|:"<>?')
 
-class VirtualKeyboardUIView(dialog.DialogView):
+class VirtualKeyboardUIView(ui.dialog.DialogView):
     def onekey_clicked(self, btn, mbtn):
         if btn.shiftkey:
             if self.shifted:
@@ -23,6 +27,7 @@ class VirtualKeyboardUIView(dialog.DialogView):
             if btn.special == False:
                 self.input_field.text += btn.text
                 self.input_field.focus()
+                self.input_field.layout()
             else:
                 if btn.spacekey:
                     self.input_field.text += ' '
@@ -49,11 +54,11 @@ class VirtualKeyboardUIView(dialog.DialogView):
         self.return_text = text
         self.startup = 0
         
-        dialog.DialogView.__init__(self, pygame.Rect(0, 0, 1, 1))
-        self.on_inputed = callback.Signal()
+        ui.dialog.DialogView.__init__(self, pygame.Rect(0, 0, 1, 1))
+        self.on_inputed = ui.callback.Signal()
         
-        self.input_field = textfield.TextField(pygame.Rect(0,0,window.rect.w - 30,theme.current.label_height), "", "")
-        self.input_field.valign = label.TOP
+        self.input_field = ui.TextField(pygame.Rect(0,0,window.rect.w - 30,theme.current.label_height), "", "")
+        self.input_field.valign = ui.label.TOP
         self.input_field.text = text
         self.add_child(self.input_field)
         
@@ -81,7 +86,7 @@ class VirtualKeyboardUIView(dialog.DialogView):
             onekey = VKey(pygame.Rect(x,y,self.keyW,self.keyH) ,item)
             onekey.on_clicked.connect(self.onekey_clicked)
             self.keys.append(onekey)
-            self.add_child(onekey)
+#             self.add_child(onekey)
             x += self.keyW + margin_x
             
         x=0
@@ -91,7 +96,7 @@ class VirtualKeyboardUIView(dialog.DialogView):
             onekey = VKey(pygame.Rect(x,y,self.keyW,self.keyH) ,item)
             onekey.on_clicked.connect(self.onekey_clicked)
             self.keys.append(onekey)
-            self.add_child(onekey)
+#             self.add_child(onekey)
             x += self.keyW + margin_x
             
         x=self.keyW/2 
@@ -102,7 +107,7 @@ class VirtualKeyboardUIView(dialog.DialogView):
             onekey = VKey(pygame.Rect(x,y,self.keyW,self.keyH) ,item)
             onekey.on_clicked.connect(self.onekey_clicked)
             self.keys.append(onekey)
-            self.add_child(onekey)
+#             self.add_child(onekey)
             x += self.keyW + margin_x
             
         x=0
@@ -150,29 +155,29 @@ class VirtualKeyboardUIView(dialog.DialogView):
         if self.startup < 0.5:
             self.input_field.text = self.return_text
             
-        self.input_field.label.font = pygame.font.SysFont('Courier New', 16)
-        self.input_field.layout()
-        for key in self.keys:
-            key.font = pygame.font.SysFont('Courier New', 20, bold= True)
-            key.layout()
+#         self.input_field.label.font = pygame.font.SysFont('Courier New', 16)
+#         self.input_field.layout()
+#         for key in self.keys:
+#             key.font = pygame.font.SysFont('Courier New', 20, bold= True)
+#             key.layout()
 
     def layout(self):
         self.frame.w = max(100, window.rect.w)
         self.frame.h = max(100, window.rect.h)
 
-        dialog.DialogView.layout(self)
+        ui.dialog.DialogView.layout(self)
 
     def _dismiss(self, btn, mbtn):
         self.dismiss()
 
     def key_down(self, key, code):
-        dialog.DialogView.key_down(self, key, code)
+        ui.dialog.DialogView.key_down(self, key, code)
         if key == pygame.K_RETURN:  # ~ ok
             self.dismiss()
 
-class VKey(button.Button):
+class VKey(ui.button.Button):
     def __init__(self, frame, caption):
-        button.Button.__init__(self, frame, caption)
+        ui.Button.__init__(self, frame, caption)
         self.default_caption = caption
         self.special = False
         self.enter = False
