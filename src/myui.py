@@ -68,8 +68,8 @@ def run():
     
 
     while True:
-        time.sleep(0.1)
-        dt = clock.tick(25)
+#         time.sleep(0.1)
+        dt = clock.tick(20)
 
         elapsed += dt
         if elapsed > 5000:
