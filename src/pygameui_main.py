@@ -25,6 +25,7 @@ class SceneManager(object):
     def use_scene(self, index):
         ui.scene.pop()
         ui.scene.push(self.scenes[index])
+        ui.event_on()
 
 if __name__ == '__main__':
     ui.init('pygameui ', (480, 320))

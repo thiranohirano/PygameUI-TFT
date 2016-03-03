@@ -44,6 +44,7 @@ import time
 Rect = pygame.Rect
 window_surface = None
 ui_quit = False
+event_flag = False
 
 def init(name='', window_size=(640, 480)):
     pygame.init()
@@ -57,8 +58,13 @@ def init(name='', window_size=(640, 480)):
 def quit():
     global ui_quit
     ui_quit = True
+    
+def event_on():
+    global event_flag
+    event_flag = True
 
 def run():
+    global event_flag
     assert len(scene.stack) > 0
 
     clock = pygame.time.Clock()
@@ -68,13 +74,13 @@ def run():
     
 
     while True:
-#         time.sleep(0.1)
+        time.sleep(0.01)
         dt = clock.tick(20)
 
         elapsed += dt
         if elapsed > 5000:
             elapsed = 0
-        event_flag = False
+#         event_flag = False
         events = pygame.event.get() 
         for e in events:
             if e.type == pygame.QUIT:
@@ -122,11 +128,13 @@ def run():
                     focus.view.key_up(e.key)
                 else:
                     scene.current.key_up(e.key)
-#         if event_flag:
-        scene.current.update(dt / 1000.0)
-        scene.current.draw()
-        window_surface.blit(scene.current.surface, (0, 0))
-        pygame.display.flip()
+        if event_flag:
+            print 'event'
+            scene.current.update(dt / 1000.0)
+            scene.current.draw()
+            window_surface.blit(scene.current.surface, (0, 0))
+            pygame.display.flip()
+            event_flag = False
         
         if ui_quit:
             pygame.quit()
